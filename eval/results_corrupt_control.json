@@ -1,0 +1,62 @@
+{
+  "gold_file": "../data/eval.jsonl",
+  "pred_file": "predictions_corrupt.jsonl",
+  "cases": 128,
+  "metrics": {
+    "call_exact_match_accuracy": 0.9218,
+    "argument_accuracy": 0.9749,
+    "invalid_call_rate": 0.0,
+    "task_success_rate": 0.7188
+  },
+  "counts": {
+    "expected_calls": 243,
+    "exact_calls": 224,
+    "expected_argument_values": 757,
+    "correct_argument_values": 738,
+    "predicted_calls": 260,
+    "invalid_calls": 0,
+    "successful_cases": 92
+  },
+  "per_reason_task_success": {
+    "bank_server_error": {
+      "cases": 17,
+      "successful": 0,
+      "rate": 0.0
+    },
+    "card_declined": {
+      "cases": 24,
+      "successful": 24,
+      "rate": 1.0
+    },
+    "daily_limit_exceeded": {
+      "cases": 14,
+      "successful": 14,
+      "rate": 1.0
+    },
+    "expired_card": {
+      "cases": 13,
+      "successful": 13,
+      "rate": 1.0
+    },
+    "insufficient_funds": {
+      "cases": 15,
+      "successful": 15,
+      "rate": 1.0
+    },
+    "network_drop": {
+      "cases": 15,
+      "successful": 15,
+      "rate": 1.0
+    },
+    "otp_timeout": {
+      "cases": 19,
+      "successful": 0,
+      "rate": 0.0
+    },
+    "wrong_cvv": {
+      "cases": 11,
+      "successful": 11,
+      "rate": 1.0
+    }
+  }
+}

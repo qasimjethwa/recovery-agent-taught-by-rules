@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Recovery Copilot — AI Revenue Recovery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink: #0B1E3D;
+  --ink2: #122A4F;
+  --teal: #0FBFA0;
+  --teal-dark: #0A9B84;
+  --amber: #FF9F1C;
+  --red: #E15554;
+  --bg: #F3F6FA;
+  --card: #FFFFFF;
+  --line: #E4E9F0;
+  --text: #16233B;
+  --text-soft: #60728A;
+  --text-faint: #93A2B8;
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font-family: inherit; }
+
+/* ================= HERO ================= */
+.hero {
+  background: linear-gradient(160deg, var(--ink) 0%, var(--ink2) 100%);
+  color: #fff;
+  padding: 40px 40px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.brand { display: flex; align-items: center; gap: 10px; }
+
+.brand-mark {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--ink);
+  font-size: 15px;
+  animation: beat 2.6s ease-in-out infinite;
+}
+
+@keyframes beat {
+  0%, 100% { transform: scale(1); }
+  12% { transform: scale(1.18); }
+  24% { transform: scale(1); }
+  36% { transform: scale(1.1); }
+  48% { transform: scale(1); }
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: -0.01em;
+}
+
+.hero-tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #8DA3C4;
+  text-align: right;
+}
+
+.hero-main {
+  max-width: 1240px;
+  margin: 28px auto 0;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 40px;
+  align-items: end;
+}
+
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.4vw, 42px);
+  font-weight: 600;
+  line-height: 1.15;
+  margin: 0 0 14px;
+  letter-spacing: -0.01em;
+}
+
+.hero-headline .hl { color: var(--teal); }
+
+.hero-sub {
+  color: #A9BAD4;
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 480px;
+  margin: 0;
+}
+
+.hero-metric {
+  justify-self: end;
+  text-align: right;
+}
+
+.hero-metric-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8DA3C4;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.hero-metric-value {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 4.4vw, 56px);
+  font-weight: 700;
+  color: var(--teal);
+  line-height: 1;
+}
+
+/* pulse chart under hero */
+.pulse-wrap {
+  max-width: 1240px;
+  margin: 30px auto 0;
+  position: relative;
+  height: 90px;
+}
+
+.pulse-wrap svg { width: 100%; height: 100%; display: block; }
+.pulse-line { fill: none; stroke: var(--teal); stroke-width: 2; opacity: 0.9; }
+.pulse-fill { fill: url(#pulseGrad); opacity: 0.5; }
+.pulse-grid line { stroke: rgba(255,255,255,0.06); stroke-width: 1; }
+
+.hero-stats {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 18px 0 26px;
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.mini-stat { display: flex; flex-direction: column; gap: 3px; }
+.mini-stat-label { font-size: 11px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: #8DA3C4; }
+.mini-stat-value { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: #fff; }
+.mini-stat-value.amber { color: var(--amber); }
+.mini-stat-value.teal { color: var(--teal); }
+
+/* ================= MAIN ================= */
+.wrap { max-width: 1240px; margin: 0 auto; padding: 34px 40px 70px; }
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.panel-head h1 { font-family: var(--font-display); font-size: 21px; margin: 0 0 6px; }
+.panel-head .sub { color: var(--text-soft); font-size: 13.5px; max-width: 560px; margin: 0; line-height: 1.55; }
+
+.controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+.run-btn {
+  background: var(--teal);
+  color: var(--ink);
+  border: none;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13.5px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  white-space: nowrap;
+}
+.run-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(15,191,160,0.3); }
+.run-btn:disabled { background: #B9CBCB; cursor: default; }
+
+.reset-btn {
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--text-soft);
+  font-size: 13px;
+  padding: 11px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.reset-btn:hover { border-color: var(--text-soft); color: var(--text); }
+
+.run-btn:focus-visible, .reset-btn:focus-visible, .chip:focus-visible, .drawer-close:focus-visible, tr:focus-visible, th.sortable:focus-visible {
+  outline: 2px solid var(--teal-dark);
+  outline-offset: 2px;
+}
+
+/* filter chips + search */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.chip {
+  font-size: 12.5px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.chip:hover { border-color: var(--teal); color: var(--text); }
+.chip.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+.search-box {
+  position: relative;
+}
+.search-box input {
+  font-family: var(--font-body);
+  font-size: 13px;
+  padding: 9px 14px 9px 32px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  width: 220px;
+  color: var(--text);
+}
+.search-box input:focus { outline: none; border-color: var(--teal); }
+.search-box::before {
+  content: "";
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  width: 12px; height: 12px;
+  border: 1.5px solid var(--text-faint);
+  border-radius: 50%;
+}
+.search-box::after {
+  content: "";
+  position: absolute; left: 21px; top: 63%;
+  width: 6px; height: 1.5px;
+  background: var(--text-faint);
+  transform: rotate(45deg);
+}
+
+/* content grid: table + side chart */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 20px;
+  align-items: start;
+}
+
+.table-wrap {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+
+thead th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-soft);
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--line);
+  background: #FAFBFD;
+  white-space: nowrap;
+}
+
+th.sortable { cursor: pointer; user-select: none; }
+th.sortable:hover { color: var(--text); }
+th.sortable .arrow { opacity: 0.4; margin-left: 3px; font-size: 9px; }
+th.sortable.active .arrow { opacity: 1; color: var(--teal-dark); }
+
+tbody tr {
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+tbody tr:hover { background: #F2FAF8; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr.flash { animation: flash 0.6s ease; }
+@keyframes flash { 0% { background: #DCF7F1; } 100% { background: transparent; } }
+
+td { padding: 12px 14px; vertical-align: middle; }
+.mono { font-family: var(--font-mono); font-size: 12px; color: var(--text-soft); }
+.cust-name { font-weight: 500; }
+
+.reason-pill {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  background: #FFF3DF;
+  color: #8A5A00;
+  white-space: nowrap;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.status-queued { background: #EDF1F6; color: var(--text-soft); }
+.status-recovered { background: #DCF7F1; color: #0A7A66; }
+.status-pending { background: #FFEFDD; color: #A85E00; }
+.status-pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+.empty-row td { text-align: center; padding: 40px 14px; color: var(--text-faint); font-size: 13px; }
+
+/* side panel: breakdown chart */
+.side-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px;
+}
+.side-card h3 {
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  margin: 0 0 4px;
+}
+.side-card .side-sub {
+  font-size: 11.5px;
+  color: var(--text-faint);
+  margin: 0 0 16px;
+}
+
+.bar-row { margin-bottom: 12px; }
+.bar-row:last-child { margin-bottom: 0; }
+.bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: var(--text-soft);
+  margin-bottom: 5px;
+}
+.bar-label b { color: var(--text); font-family: var(--font-mono); font-weight: 500; }
+.bar-track {
+  height: 6px;
+  background: #EEF2F7;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal-dark), var(--teal));
+  border-radius: 4px;
+  width: 0%;
+  transition: width 0.5s ease;
+}
+
+/* ================= DRAWER ================= */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(11,30,61,0.35);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 19;
+}
+.overlay.open { opacity: 1; pointer-events: auto; }
+
+.drawer {
+  position: fixed; top: 0; right: -420px;
+  width: 400px; max-width: 92vw; height: 100%;
+  background: var(--card);
+  box-shadow: -16px 0 48px rgba(11,31,58,0.18);
+  transition: right 0.28s cubic-bezier(.4,0,.2,1);
+  z-index: 20;
+  padding: 26px 24px;
+  overflow-y: auto;
+}
+.drawer.open { right: 0; }
+
+.drawer-close {
+  position: absolute; top: 16px; right: 18px;
+  background: none; border: none;
+  font-size: 20px; color: var(--text-soft);
+  cursor: pointer; line-height: 1; padding: 6px;
+}
+
+.drawer-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.drawer-id { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-soft); }
+.drawer-badge { font-size: 11.5px; padding: 4px 10px; border-radius: 999px; font-weight: 500; }
+
+.drawer h3 { font-family: var(--font-display); font-size: 18px; margin: 0 0 10px; }
+
+.drawer-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.meta-item { background: var(--bg); border-radius: 8px; padding: 10px 12px; }
+.meta-item-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-faint); display: block; margin-bottom: 3px; }
+.meta-item-value { font-family: var(--font-mono); font-size: 12.5px; font-weight: 500; }
+
+.message-card {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+}
+.message-channel {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 10.5px;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--teal-dark); margin-bottom: 9px;
+}
+.message-card p { font-size: 13.5px; line-height: 1.6; margin: 0; color: var(--text); }
+
+.action-note {
+  margin-top: 16px;
+  font-size: 12.5px;
+  color: var(--text-soft);
+  line-height: 1.6;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line);
+}
+
+/* ================= FOOTER ================= */
+.footer { text-align: center; padding: 26px; font-size: 11.5px; color: var(--text-faint); }
+.footer a { color: var(--text-soft); }
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-mark { animation: none; }
+  html { scroll-behavior: auto; }
+}
+
+@media (max-width: 900px) {
+  .hero-main { grid-template-columns: 1fr; gap: 18px; }
+  .hero-metric { justify-self: start; text-align: left; }
+  .content-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .hero, .wrap { padding-left: 20px; padding-right: 20px; }
+  .table-wrap { overflow-x: auto; }
+  table { min-width: 760px; }
+  .drawer-meta-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-top">
+    <div class="brand">
+      <span class="brand-mark">◍</span>
+      <span class="brand-name">Recovery Copilot</span>
+    </div>
+    <div class="hero-tag">Razorpay AI Builder Internship 2026<br>Track 3 — AI Revenue Recovery</div>
+  </div>
+
+  <div class="hero-main">
+    <div>
+      <h1 class="hero-headline">Every failed payment has<br class="brk"> a <span class="hl">reason</span> — and a way back.</h1>
+      <p class="hero-sub">Most checkouts treat every payment failure the same way: one generic retry, or nothing at all. Recovery Copilot reads the actual failure reason for each transaction, assigns the right recovery channel and timing, and drafts the outreach automatically.</p>
+    </div>
+    <div class="hero-metric">
+      <span class="hero-metric-label">Revenue Recovered</span>
+      <span class="hero-metric-value" id="heroRecovered">₹0</span>
+    </div>
+  </div>
+
+  <div class="pulse-wrap">
+    <svg viewBox="0 0 1200 90" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="pulseGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0FBFA0" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#0FBFA0" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <g class="pulse-grid">
+        <line x1="0" y1="22" x2="1200" y2="22"/>
+        <line x1="0" y1="45" x2="1200" y2="45"/>
+        <line x1="0" y1="68" x2="1200" y2="68"/>
+      </g>
+      <path id="pulseFill" class="pulse-fill" d="M0,45 L1200,45 L1200,90 L0,90 Z"/>
+      <path id="pulseLine" class="pulse-line" d="M0,45 L1200,45"/>
+    </svg>
+  </div>
+
+  <div class="hero-stats">
+    <div class="mini-stat">
+      <span class="mini-stat-label">Failed Payments</span>
+      <span class="mini-stat-value" id="statTotal">0</span>
+    </div>
+    <div class="mini-stat">
+      <span class="mini-stat-label">Recovery Attempts Run</span>
+      <span class="mini-stat-value" id="statQueued">0</span>
+    </div>
+    <div class="mini-stat">
+      <span class="mini-stat-label">Recovery Rate</span>
+      <span class="mini-stat-value amber" id="statRate">0%</span>
+    </div>
+    <div class="mini-stat">
+      <span class="mini-stat-label">Avg. Order Value Saved</span>
+      <span class="mini-stat-value teal" id="statAvg">₹0</span>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="panel-head">
+    <div>
+      <h1>Failed Transaction Queue</h1>
+      <p class="sub">24 live-looking failure cases across 8 common reasons. Click any row to preview the exact recovery message that would be sent.</p>
+    </div>
+    <div class="controls">
+      <button class="reset-btn" id="resetBtn">Reset</button>
+      <button id="runBtn" class="run-btn">Run Recovery Simulation</button>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="chips" id="chips"></div>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search customer or txn ID" />
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <div class="table-wrap">
+      <table id="txnTable">
+        <thead>
+          <tr>
+            <th>Txn ID</th>
+            <th>Customer</th>
+            <th class="sortable" id="sortAmount">Amount <span class="arrow">▾</span></th>
+            <th>Method</th>
+            <th>Failure Reason</th>
+            <th>Recovery Action</th>
+            <th>Channel</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="txnBody"></tbody>
+      </table>
+    </div>
+
+    <div class="side-card">
+      <h3>Recovery Rate by Reason</h3>
+      <p class="side-sub">Updates as the simulation runs</p>
+      <div id="breakdownBars"></div>
+    </div>
+  </div>
+</main>
+
+<div class="overlay" id="overlay"></div>
+<div class="drawer" id="drawer">
+  <button class="drawer-close" id="drawerClose">×</button>
+  <div class="drawer-head">
+    <span class="drawer-id" id="drawerId"></span>
+    <span class="drawer-badge" id="drawerBadge"></span>
+  </div>
+  <h3 id="drawerReason"></h3>
+
+  <div class="drawer-meta-grid">
+    <div class="meta-item">
+      <span class="meta-item-label">Customer</span>
+      <span class="meta-item-value" id="drawerCustomer"></span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-item-label">Amount</span>
+      <span class="meta-item-value" id="drawerAmount"></span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-item-label">Method</span>
+      <span class="meta-item-value" id="drawerMethod"></span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-item-label">Retry Delay</span>
+      <span class="meta-item-value" id="drawerDelay"></span>
+    </div>
+  </div>
+
+  <div class="message-card">
+    <span class="message-channel" id="drawerChannel"></span>
+    <p id="drawerMessage"></p>
+  </div>
+
+  <p class="action-note" id="drawerAction"></p>
+</div>
+
+<footer class="footer">
+  Rule engine + deterministic template generation — fully self-contained, zero external API calls.
+</footer>
+
+<script>
+// ============================================================
+// DATA LAYER
+// ============================================================
+const CUSTOMER_NAMES = [
+  "Aarav Mehta", "Priya Nair", "Rohan Kapoor", "Sneha Iyer", "Kabir Singh",
+  "Ananya Rao", "Vivaan Joshi", "Ishita Desai", "Arjun Verma", "Diya Pillai",
+  "Reyansh Gupta", "Meera Pillai", "Karthik Reddy", "Tanya Malhotra", "Yash Trivedi",
+  "Naina Chawla", "Aditya Bhat", "Riya Sharma", "Dev Patel", "Simran Kaur",
+  "Neha Kulkarni", "Farhan Shaikh", "Pooja Menon", "Aryan Bhatia"
+];
+const PAYMENT_METHODS = ["UPI", "Credit Card", "Debit Card", "Netbanking", "Wallet"];
+
+const FAILURE_RULES = {
+  insufficient_funds: { label: "Insufficient Funds", action: "Delay retry 3 hrs, then offer UPI as alternate rail", channel: "SMS", delayMinutes: 180, successRate: 0.58 },
+  otp_timeout: { label: "OTP Timeout", action: "Instant retry nudge on the same method", channel: "SMS", delayMinutes: 2, successRate: 0.71 },
+  bank_server_error: { label: "Bank Server Error", action: "Silent auto-retry, no customer message needed", channel: "System", delayMinutes: 30, successRate: 0.66 },
+  card_declined: { label: "Card Declined by Issuer", action: "Suggest an alternate payment method", channel: "WhatsApp", delayMinutes: 15, successRate: 0.49 },
+  network_drop: { label: "Network Drop Mid-Transaction", action: "Immediate one-tap retry link", channel: "SMS", delayMinutes: 1, successRate: 0.74 },
+  wrong_cvv: { label: "Incorrect CVV", action: "Prompt to securely re-enter card details", channel: "Email", delayMinutes: 10, successRate: 0.62 },
+  expired_card: { label: "Card Expired", action: "Prompt to update card, offer UPI/Wallet fallback", channel: "Email", delayMinutes: 20, successRate: 0.41 },
+  daily_limit_exceeded: { label: "Daily Limit Exceeded", action: "Suggest alternate method or retry after midnight", channel: "WhatsApp", delayMinutes: 240, successRate: 0.53 }
+};
+const FAILURE_KEYS = Object.keys(FAILURE_RULES);
+
+const TEMPLATES = {
+  SMS: [
+    (n, a, m) => `Hi ${n.split(" ")[0]}, your payment of ₹${a} didn't go through. Tap to retry with ${m} — takes 10 seconds.`,
+    (n, a, m) => `${n.split(" ")[0]}, we noticed your ₹${a} payment failed. No charge was made. Retry anytime here.`,
+    (n, a, m) => `Quick nudge — your order for ₹${a} is on hold. Complete payment via ${m} to confirm it.`
+  ],
+  WhatsApp: [
+    (n, a, m) => `Hey ${n.split(" ")[0]} — your ₹${a} payment via ${m} didn't complete. Want to try UPI instead? One tap below.`,
+    (n, a, m) => `${n.split(" ")[0]}, looks like ${m} declined your ₹${a} payment. Happens sometimes — try a different method here.`,
+    (n, a, m) => `Your cart is still saved. Payment of ₹${a} didn't clear. Switch payment method and finish in seconds.`
+  ],
+  Email: [
+    (n, a, m) => `Hi ${n}, we couldn't process your payment of ₹${a} using ${m}. Please review your card details and try again.`,
+    (n, a, m) => `Hello ${n}, your recent transaction of ₹${a} was not completed. Update your payment method to complete the order.`,
+    (n, a, m) => `${n}, your ${m} appears to have expired or been declined for ₹${a}. Update it here to avoid losing your order.`
+  ],
+  System: [
+    () => `Automated retry scheduled — no customer action required.`,
+    () => `Silent recovery attempt queued via payment gateway failover.`,
+    () => `Backend retry in progress, customer not notified.`
+  ]
+};
+
+function hashString(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
+function generateMessage(txn, rule) {
+  const templates = TEMPLATES[rule.channel];
+  const idx = hashString(txn.id) % templates.length;
+  return templates[idx](txn.customer, txn.amount.toLocaleString("en-IN"), txn.method);
+}
+
+function simulatedOutcome(txn, rule) {
+  const draw = (hashString(txn.id + "outcome") % 1000) / 1000;
+  return draw < rule.successRate ? "recovered" : "pending";
+}
+
+function generateDataset(count) {
+  const rows = [];
+  for (let i = 0; i < count; i++) {
+    const id = "TXN" + (100000 + i * 7 + hashString("seed" + i) % 900);
+    const customer = CUSTOMER_NAMES[hashString(id + "name") % CUSTOMER_NAMES.length];
+    const method = PAYMENT_METHODS[hashString(id + "method") % PAYMENT_METHODS.length];
+    const amount = 199 + (hashString(id + "amt") % 48) * 63;
+    const reasonKey = FAILURE_KEYS[hashString(id + "reason") % FAILURE_KEYS.length];
+    const rule = FAILURE_RULES[reasonKey];
+
+    const txn = { id, customer, method, amount, reasonKey };
+    txn.reasonLabel = rule.label;
+    txn.action = rule.action;
+    txn.channel = rule.channel;
+    txn.delayMinutes = rule.delayMinutes;
+    txn.message = generateMessage(txn, rule);
+    txn.outcome = "queued";
+    txn._finalOutcome = simulatedOutcome(txn, rule);
+    rows.push(txn);
+  }
+  return rows;
+}
+
+// ============================================================
+// APP STATE
+// ============================================================
+let dataset = generateDataset(24);
+let activeFilter = "all";
+let searchTerm = "";
+let sortDir = null; // null | "asc" | "desc"
+let simulationRan = false;
+
+const el = (id) => document.getElementById(id);
+const txnBody = el("txnBody");
+const runBtn = el("runBtn");
+const resetBtn = el("resetBtn");
+const chipsWrap = el("chips");
+const searchInput = el("searchInput");
+const sortAmountTh = el("sortAmount");
+
+function fmtINR(n) { return "₹" + Math.round(n).toLocaleString("en-IN"); }
+
+function statusPill(status) {
+  const map = {
+    queued: ["status-queued", "Queued"],
+    recovered: ["status-recovered", "Recovered"],
+    pending: ["status-pending", "Still Failing"]
+  };
+  const [cls, label] = map[status];
+  return `<span class="status-pill ${cls}">${label}</span>`;
+}
+
+function buildChips() {
+  const reasons = ["all", ...FAILURE_KEYS];
+  chipsWrap.innerHTML = reasons.map(r => {
+    const label = r === "all" ? "All reasons" : FAILURE_RULES[r].label;
+    return `<button class="chip ${r === activeFilter ? "active" : ""}" data-key="${r}">${label}</button>`;
+  }).join("");
+  chipsWrap.querySelectorAll(".chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      activeFilter = chip.dataset.key;
+      buildChips();
+      renderTable();
+    });
+  });
+}
+
+function getFilteredSorted() {
+  let rows = dataset.filter(t => activeFilter === "all" || t.reasonKey === activeFilter);
+  if (searchTerm.trim()) {
+    const q = searchTerm.trim().toLowerCase();
+    rows = rows.filter(t => t.customer.toLowerCase().includes(q) || t.id.toLowerCase().includes(q));
+  }
+  if (sortDir) {
+    rows = [...rows].sort((a, b) => sortDir === "asc" ? a.amount - b.amount : b.amount - a.amount);
+  }
+  return rows;
+}
+
+function renderTable() {
+  const rows = getFilteredSorted();
+  if (rows.length === 0) {
+    txnBody.innerHTML = `<tr class="empty-row"><td colspan="8">No transactions match this filter.</td></tr>`;
+    return;
+  }
+  txnBody.innerHTML = rows.map(txn => `
+    <tr data-id="${txn.id}" tabindex="0">
+      <td class="mono">${txn.id}</td>
+      <td class="cust-name">${txn.customer}</td>
+      <td class="mono">${fmtINR(txn.amount)}</td>
+      <td>${txn.method}</td>
+      <td><span class="reason-pill">${txn.reasonLabel}</span></td>
+      <td>${txn.action}</td>
+      <td class="mono">${txn.channel}</td>
+      <td id="status-${txn.id}">${statusPill(txn.outcome)}</td>
+    </tr>
+  `).join("");
+
+  txnBody.querySelectorAll("tr[data-id]").forEach(row => {
+    row.addEventListener("click", () => openDrawer(row.dataset.id));
+    row.addEventListener("keydown", e => { if (e.key === "Enter") openDrawer(row.dataset.id); });
+  });
+}
+
+function updateStats() {
+  const total = dataset.length;
+  const attempted = dataset.filter(t => t.outcome !== "queued");
+  const recovered = dataset.filter(t => t.outcome === "recovered");
+  const recoveredAmount = recovered.reduce((s, t) => s + t.amount, 0);
+  const rate = attempted.length > 0 ? Math.round((recovered.length / attempted.length) * 100) : 0;
+  const avgSaved = recovered.length > 0 ? recoveredAmount / recovered.length : 0;
+
+  el("statTotal").textContent = total;
+  el("statQueued").textContent = attempted.length;
+  el("statRate").textContent = rate + "%";
+  el("statAvg").textContent = fmtINR(avgSaved);
+  el("heroRecovered").textContent = fmtINR(recoveredAmount);
+}
+
+function updateBreakdown() {
+  const wrap = el("breakdownBars");
+  const rows = FAILURE_KEYS.map(key => {
+    const txns = dataset.filter(t => t.reasonKey === key);
+    const attempted = txns.filter(t => t.outcome !== "queued");
+    const recovered = txns.filter(t => t.outcome === "recovered");
+    const rate = attempted.length > 0 ? Math.round((recovered.length / attempted.length) * 100) : 0;
+    return { key, label: FAILURE_RULES[key].label, rate, hasData: attempted.length > 0 };
+  });
+
+  wrap.innerHTML = rows.map(r => `
+    <div class="bar-row">
+      <div class="bar-label"><span>${r.label}</span><b>${r.hasData ? r.rate + "%" : "—"}</b></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${r.hasData ? r.rate : 0}%"></div></div>
+    </div>
+  `).join("");
+}
+
+// ---------- pulse chart ----------
+const pulseLine = el("pulseLine");
+const pulseFill = el("pulseFill");
+
+function drawPulse(points) {
+  // points: array of {x: 0-1200, y: 0-90} — baseline 45, spikes go up toward 10
+  const width = 1200, baseline = 45;
+  if (points.length === 0) {
+    pulseLine.setAttribute("d", `M0,${baseline} L${width},${baseline}`);
+    pulseFill.setAttribute("d", `M0,${baseline} L${width},${baseline} L${width},90 L0,90 Z`);
+    return;
+  }
+  let d = `M0,${baseline} `;
+  let prevX = 0;
+  points.forEach(p => {
+    d += `L${Math.max(prevX, p.x - 10)},${baseline} L${p.x},${p.y} L${p.x + 10},${baseline} `;
+    prevX = p.x + 10;
+  });
+  d += `L${width},${baseline}`;
+  pulseLine.setAttribute("d", d);
+  pulseFill.setAttribute("d", d + ` L${width},90 L0,90 Z`);
+}
+
+// ---------- simulation ----------
+function runSimulation() {
+  runBtn.disabled = true;
+  runBtn.textContent = "Running…";
+  simulationRan = true;
+
+  const spikePoints = [];
+  const order = [...dataset];
+  let i = 0;
+
+  const interval = setInterval(() => {
+    if (i >= order.length) {
+      clearInterval(interval);
+      runBtn.textContent = "Simulation Complete";
+      updateBreakdown();
+      return;
+    }
+    const txn = order[i];
+    txn.outcome = txn._finalOutcome;
+
+    const cell = document.getElementById(`status-${txn.id}`);
+    if (cell) cell.innerHTML = statusPill(txn.outcome);
+
+    const row = txnBody.querySelector(`tr[data-id="${txn.id}"]`);
+    if (row) {
+      row.classList.remove("flash");
+      void row.offsetWidth;
+      row.classList.add("flash");
+    }
+
+    if (txn.outcome === "recovered") {
+      const x = (i / order.length) * 1200;
+      spikePoints.push({ x, y: 12 });
+      drawPulse(spikePoints);
+    }
+
+    updateStats();
+    if (i % 4 === 0) updateBreakdown();
+    i++;
+  }, 140);
+}
+
+function resetSimulation() {
+  dataset = generateDataset(24);
+  activeFilter = "all";
+  searchTerm = "";
+  sortDir = null;
+  searchInput.value = "";
+  simulationRan = false;
+  runBtn.disabled = false;
+  runBtn.textContent = "Run Recovery Simulation";
+  sortAmountTh.classList.remove("active");
+  buildChips();
+  renderTable();
+  updateStats();
+  updateBreakdown();
+  drawPulse([]);
+}
+
+// ---------- drawer ----------
+const overlay = el("overlay");
+const drawer = el("drawer");
+
+function openDrawer(txnId) {
+  const txn = dataset.find(t => t.id === txnId);
+  if (!txn) return;
+
+  el("drawerId").textContent = txn.id;
+  const badge = el("drawerBadge");
+  const badgeMap = {
+    queued: ["#EDF1F6", "#5B6B80", "Queued"],
+    recovered: ["#DCF7F1", "#0A7A66", "Recovered"],
+    pending: ["#FFEFDD", "#A85E00", "Still Failing"]
+  };
+  const [bg, color, label] = badgeMap[txn.outcome];
+  badge.style.background = bg; badge.style.color = color; badge.textContent = label;
+
+  el("drawerReason").textContent = txn.reasonLabel;
+  el("drawerCustomer").textContent = txn.customer;
+  el("drawerAmount").textContent = fmtINR(txn.amount);
+  el("drawerMethod").textContent = txn.method;
+  el("drawerDelay").textContent = txn.delayMinutes >= 60
+    ? Math.round(txn.delayMinutes / 60) + " hr" + (txn.delayMinutes >= 120 ? "s" : "")
+    : txn.delayMinutes + " min";
+  el("drawerChannel").textContent = txn.channel + " message";
+  el("drawerMessage").textContent = txn.message;
+  el("drawerAction").textContent = "Recovery strategy: " + txn.action + ".";
+
+  drawer.classList.add("open");
+  overlay.classList.add("open");
+}
+
+function closeDrawer() {
+  drawer.classList.remove("open");
+  overlay.classList.remove("open");
+}
+
+el("drawerClose").addEventListener("click", closeDrawer);
+overlay.addEventListener("click", closeDrawer);
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeDrawer(); });
+
+// ---------- sorting / search / controls ----------
+sortAmountTh.addEventListener("click", () => {
+  sortDir = sortDir === "desc" ? "asc" : "desc";
+  sortAmountTh.classList.add("active");
+  sortAmountTh.querySelector(".arrow").textContent = sortDir === "asc" ? "▴" : "▾";
+  renderTable();
+});
+
+searchInput.addEventListener("input", e => {
+  searchTerm = e.target.value;
+  renderTable();
+});
+
+runBtn.addEventListener("click", runSimulation);
+resetBtn.addEventListener("click", resetSimulation);
+
+// ---------- init ----------
+buildChips();
+renderTable();
+updateStats();
+updateBreakdown();
+drawPulse([]);
+</script>
+</body>
+</html>

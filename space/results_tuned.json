@@ -1,0 +1,106 @@
+{
+  "gold_file": "/data/eval.jsonl",
+  "pred_file": "/bucket/eval_v2/predictions_tuned.jsonl",
+  "cases": 128,
+  "metrics": {
+    "call_exact_match_accuracy": 0.6667,
+    "argument_accuracy": 0.8798,
+    "invalid_call_rate": 0.0,
+    "task_success_rate": 0.3672,
+    "task_success_rate_structural": 0.8438
+  },
+  "counts": {
+    "expected_calls": 243,
+    "exact_calls": 162,
+    "expected_argument_values": 757,
+    "correct_argument_values": 666,
+    "predicted_calls": 243,
+    "invalid_calls": 0,
+    "successful_cases": 47,
+    "structural_successful_cases": 108
+  },
+  "per_reason_task_success": {
+    "bank_server_error": {
+      "cases": 17,
+      "successful": 17,
+      "rate": 1.0
+    },
+    "card_declined": {
+      "cases": 24,
+      "successful": 7,
+      "rate": 0.2917
+    },
+    "daily_limit_exceeded": {
+      "cases": 14,
+      "successful": 4,
+      "rate": 0.2857
+    },
+    "expired_card": {
+      "cases": 13,
+      "successful": 8,
+      "rate": 0.6154
+    },
+    "insufficient_funds": {
+      "cases": 15,
+      "successful": 1,
+      "rate": 0.0667
+    },
+    "network_drop": {
+      "cases": 15,
+      "successful": 0,
+      "rate": 0.0
+    },
+    "otp_timeout": {
+      "cases": 19,
+      "successful": 9,
+      "rate": 0.4737
+    },
+    "wrong_cvv": {
+      "cases": 11,
+      "successful": 1,
+      "rate": 0.0909
+    }
+  },
+  "per_reason_task_success_structural": {
+    "bank_server_error": {
+      "cases": 17,
+      "successful": 17,
+      "rate": 1.0
+    },
+    "card_declined": {
+      "cases": 24,
+      "successful": 24,
+      "rate": 1.0
+    },
+    "daily_limit_exceeded": {
+      "cases": 14,
+      "successful": 14,
+      "rate": 1.0
+    },
+    "expired_card": {
+      "cases": 13,
+      "successful": 13,
+      "rate": 1.0
+    },
+    "insufficient_funds": {
+      "cases": 15,
+      "successful": 5,
+      "rate": 0.3333
+    },
+    "network_drop": {
+      "cases": 15,
+      "successful": 15,
+      "rate": 1.0
+    },
+    "otp_timeout": {
+      "cases": 19,
+      "successful": 19,
+      "rate": 1.0
+    },
+    "wrong_cvv": {
+      "cases": 11,
+      "successful": 1,
+      "rate": 0.0909
+    }
+  }
+}

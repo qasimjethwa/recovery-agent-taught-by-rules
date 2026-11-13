@@ -1,0 +1,156 @@
+#!/usr/bin/env python3
+"""
+LoRA SFT for the Lexsi Track 3 (Agentic Fine-tuning) entry — AgentTune step.
+
+Fine-tunes Aya Expanse 8B (Cohere Labs) on the Recovery Copilot tool-calling
+dataset so the model learns to execute payment-recovery plans with the right
+tools, in the right order, with the right arguments — and to stay silent when
+the correct action is a silent backend retry.
+
+STATUS: prepared pre-window; RUN IN-WINDOW (Nov 1–14, 2026). The run itself,
+the base-model baseline and all reported metrics happen inside the build
+window. Nothing in this file fabricates results.
+
+V2 (Nov 8, 2026) — fixes the train/eval prompt mismatch found by the v1
+audit: v1 trained on RAW user text (instruction + tools, no system prompt,
+no chat template) while evaluation used the tokenizer's chat template
+(system + user + assistant header). The v1 tuned model therefore fell back
+to base-style pretty-printing at eval time, never emitted EOS after its
+plan, and kept appending extra calls (0/128 task success, 0/17 on the
+silent-retry class). V2 builds every training prompt with the SAME
+apply_chat_template call the eval runner uses, and appends the EOS token
+explicitly to the completion, so the model learns the exact eval format
+and to stop after its plan. Hyperparameters, data and splits are
+unchanged from v1 — one variable changed.
+
+Setup (in-window):
+    pip install torch transformers datasets peft trl accelerate pyyaml
+    export HF_TOKEN=<your Hugging Face token>     # placeholder — fill in-window
+    python3 train_lora.py --config config.yaml
+
+Data format: each dataset row becomes one chat example — the scenario as the
+user turn (with the tool schemas), the gold tool-call sequence as the
+assistant turn (JSON list). Loss is applied to the assistant turn only
+(completion-only via TRL's SFTTrainer prompt/completion format).
+"""
+
+import argparse
+import json
+import os
+import sys
+
+SYSTEM_PROMPT = (
+    "You are a payment-recovery agent. Given a failed payment and its diagnosed "
+    "failure reason, respond ONLY with a JSON list of tool calls that executes "
+    "the correct recovery plan, in order. Each call is an object with 'tool' "
+    "and 'arguments'. Do not add commentary."
+)
+
+
+def load_config(path):
+    import yaml
+    with open(path) as f:
+        return yaml.safe_load(f)
+
+
+def format_example(row, tokenizer):
+    """V2: prompt is the EXACT chat-templated text the eval runner feeds
+    the model (same system prompt, same user construction, same
+    apply_chat_template call with add_generation_prompt=True), so train
+    and eval see identical input format. Completion is the compact gold
+    JSON list plus an explicit EOS token, teaching the model to stop
+    after its plan instead of appending extra calls."""
+    user = (
+        row["instruction"]
+        + "\n\nAvailable tools:\n"
+        + json.dumps(row["tools"], ensure_ascii=False)
+    )
+    prompt = tokenizer.apply_chat_template(
+        [{"role": "system", "content": SYSTEM_PROMPT},
+         {"role": "user", "content": user}],
+        tokenize=False, add_generation_prompt=True)
+    completion = json.dumps(row["expected_calls"], ensure_ascii=False)
+    if tokenizer.eos_token:
+        completion = completion + tokenizer.eos_token
+    return {"prompt": prompt, "completion": completion}
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--config", default="config.yaml")
+    args = ap.parse_args()
+    cfg = load_config(args.config)
+
+    # HF_TOKEN check removed for the Jobs run: the base model is mounted
+    # locally at /model (gated access already granted to the account),
+    # the dataset is mounted, and output goes to a bucket mount, so no
+    # Hub download or push happens inside the job.
+
+    # Imports are deferred so this file stays importable (and reviewable)
+    # on machines without the training stack installed.
+    import torch
+    from datasets import Dataset
+    from peft import LoraConfig
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+    from trl import SFTConfig, SFTTrainer
+
+    here = os.path.dirname(os.path.abspath(__file__))
+    train_path = os.path.join(here, cfg["train_file"])
+    rows = [json.loads(l) for l in open(train_path)]
+
+    model_id = cfg["base_model"]
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
+    if tokenizer.pad_token is None:
+        tokenizer.pad_token = tokenizer.eos_token
+    # V2: tokenizer must load before the dataset is built — the prompts
+    # are rendered through its chat template.
+    dataset = Dataset.from_list([format_example(r, tokenizer) for r in rows])
+    print(f"training examples: {len(dataset)}")
+    print(f"sample prompt tail: {dataset[0]['prompt'][-120:]!r}")
+    print(f"sample completion: {dataset[0]['completion'][:120]!r}")
+
+    model = AutoModelForCausalLM.from_pretrained(
+        model_id, dtype=torch.bfloat16, device_map="auto")
+
+    lora = cfg["lora"]
+    peft_config = LoraConfig(
+        r=lora["r"], lora_alpha=lora["alpha"], lora_dropout=lora["dropout"],
+        target_modules=lora["target_modules"], task_type=lora["task_type"])
+
+    t = cfg["training"]
+    sft_config = SFTConfig(
+        output_dir=os.path.join(here, cfg["output"]["local_dir"]),
+        num_train_epochs=t["num_epochs"],
+        per_device_train_batch_size=t["per_device_batch_size"],
+        gradient_accumulation_steps=t["gradient_accumulation_steps"],
+        learning_rate=t["learning_rate"],
+        lr_scheduler_type=t["lr_scheduler"],
+        warmup_ratio=t["warmup_ratio"],
+        max_length=t["max_seq_length"],
+        logging_steps=t["logging_steps"],
+        save_strategy=t["save_strategy"],
+        bf16=t["bf16"],
+        gradient_checkpointing=True,
+        completion_only_loss=True,
+        packing=False,
+    )
+    trainer = SFTTrainer(
+        model=model, args=sft_config, train_dataset=dataset,
+        peft_config=peft_config, processing_class=tokenizer,
+    )
+    trainer.train()
+    trainer.save_model(sft_config.output_dir)
+    tokenizer.save_pretrained(sft_config.output_dir)
+    print(f"adapter saved to {sft_config.output_dir}")
+
+    adapter_repo = cfg["output"].get("adapter_repo")
+    if adapter_repo:
+        trainer.push_to_hub(adapter_repo)
+        print(f"adapter pushed to https://huggingface.co/{adapter_repo}")
+    else:
+        print("output.adapter_repo is null in config — skipping Hub upload "
+              "(set it in-window to publish the adapter artifact).")
+
+
+if __name__ == "__main__":
+    main()

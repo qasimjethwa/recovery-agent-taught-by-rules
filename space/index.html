@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recovery Agent, Taught by Rules — demo</title>
+<style>
+  body { font-family: system-ui, -apple-system, sans-serif; max-width: 1100px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; }
+  h1 { font-size: 1.6rem; margin-bottom: .2rem; }
+  p.sub { color: #555; margin-top: 0; }
+  .metrics { background: #f6f6f0; border: 1px solid #ddd; padding: .8rem 1rem; border-radius: 8px; }
+  .metrics b { display: block; margin: .2rem 0; }
+  select { font-size: 1rem; padding: .4rem; width: 100%; margin: .8rem 0; }
+  .scenario { background: #eef4ff; border-left: 4px solid #3366cc; padding: .7rem 1rem; margin: .8rem 0; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+  @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+  .card { border: 1px solid #ddd; border-radius: 8px; padding: .8rem; }
+  .card h3 { margin: 0 0 .4rem; font-size: 1rem; }
+  .verdict { font-weight: 700; margin-top: .5rem; }
+  .ok { color: #0a7d2c; } .bad { color: #b3261e; }
+  pre { white-space: pre-wrap; word-break: break-word; font-size: .82rem; margin: 0; }
+  footer { color: #666; font-size: .85rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<h1>Recovery Agent, Taught by Rules</h1>
+<p class="sub">Fine-tuned Aya Expanse 8B for reliable tool use in failed-payment recovery — Lexsi AI Safety &amp; Alignment Hackathon, Track 3. Pick a held-out eval case and compare the <b>gold</b> recovery plan (deterministic Recovery Copilot rule engine), the <b>base</b> model's zero-shot plan, and the <b>tuned</b> model's plan. Every prediction shown is a recorded output of the Nov 8, 2026 evaluation run — nothing here is generated live.</p>
+<div class="metrics" id="metrics">Loading metrics…</div>
+<select id="case"></select>
+<div class="scenario" id="scenario"></div>
+<div class="grid">
+  <div class="card"><h3>Gold plan (rule engine)</h3><pre id="gold"></pre></div>
+  <div class="card"><h3>Base model prediction</h3><pre id="base"></pre><div class="verdict" id="base-v"></div></div>
+  <div class="card"><h3>Tuned model prediction</h3><pre id="tuned"></pre><div class="verdict" id="tuned-v"></div></div>
+</div>
+<footer>
+  Adapter: <a href="https://huggingface.co/qasimjethwa/aya-expanse-8b-recovery-lora">qasimjethwa/aya-expanse-8b-recovery-lora</a> ·
+  Dataset + harness: <a href="https://huggingface.co/datasets/qasimjethwa/recovery-copilot-toolcalls">qasimjethwa/recovery-copilot-toolcalls</a>
+</footer>
+<script>
+async function loadJSONL(url) {
+  const t = await (await fetch(url)).text();
+  return t.trim().split("\n").map(l => JSON.parse(l));
+}
+function fmt(res) {
+  const m = res.metrics, c = res.counts;
+  return `exact-match ${m.call_exact_match_accuracy.toFixed(4)} · arguments ${m.argument_accuracy.toFixed(4)} · invalid ${m.invalid_call_rate.toFixed(4)} · task success ${m.task_success_rate.toFixed(4)} (${c.successful_cases}/${res.cases})`;
+}
+let EVAL = {}, BASE = {}, TUNED = {};
+async function init() {
+  const [ev, base, tuned, resB, resT] = await Promise.all([
+    loadJSONL("eval.jsonl"),
+    loadJSONL("predictions_baseline.jsonl"),
+    loadJSONL("predictions_tuned.jsonl"),
+    (await fetch("results_baseline.json")).json(),
+    (await fetch("results_tuned.json")).json(),
+  ]);
+  ev.forEach(r => EVAL[r.id] = r);
+  base.forEach(r => BASE[r.id] = r);
+  tuned.forEach(r => TUNED[r.id] = r);
+  document.getElementById("metrics").innerHTML =
+    `<b>Base (Aya Expanse 8B, zero-shot):</b> ${fmt(resB)}<br>` +
+    `<b>Tuned (LoRA adapter):</b> ${fmt(resT)}<br>` +
+    `<span style="color:#555">Structural task success (ignoring the hash-selected message text): base ${resB.metrics.task_success_rate_structural ?? 0} · tuned ${resT.metrics.task_success_rate_structural ?? 0}</span>`;
+  const sel = document.getElementById("case");
+  Object.keys(EVAL).sort().forEach(id => {
+    const o = document.createElement("option");
+    o.value = id;
+    o.textContent = `${id} — ${EVAL[id].scenario.failure_label}`;
+    sel.appendChild(o);
+  });
+  sel.addEventListener("change", () => show(sel.value));
+  show(sel.value);
+}
+function verdict(gold, pred) {
+  const same = JSON.stringify(gold) === JSON.stringify(pred);
+  return { text: same ? "✅ exact match" : "❌ differs from gold", cls: same ? "ok" : "bad" };
+}
+function show(id) {
+  const row = EVAL[id], gold = row.expected_calls;
+  const b = BASE[id].predicted_calls, t = TUNED[id].predicted_calls;
+  document.getElementById("scenario").textContent =
+    `Transaction ${row.scenario.txn_id}: ${row.scenario.customer}, ${row.scenario.payment_method}, ₹${row.scenario.amount_inr}. Diagnosed failure: ${row.scenario.failure_label}.`;
+  document.getElementById("gold").textContent = JSON.stringify(gold, null, 2);
+  document.getElementById("base").textContent = JSON.stringify(b, null, 2);
+  document.getElementById("tuned").textContent = JSON.stringify(t, null, 2);
+  const vb = verdict(gold, b), vt = verdict(gold, t);
+  const be = document.getElementById("base-v"), te = document.getElementById("tuned-v");
+  be.textContent = vb.text; be.className = "verdict " + vb.cls;
+  te.textContent = vt.text; te.className = "verdict " + vt.cls;
+}
+init();
+</script>
+</body>
+</html>

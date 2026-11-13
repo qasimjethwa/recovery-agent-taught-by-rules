@@ -1,0 +1,24 @@
+base_model: "CohereLabs/aya-expanse-8b"
+train_file: "train.jsonl"
+eval_file: "eval.jsonl"
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules: ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
+  task_type: "CAUSAL_LM"
+training:
+  num_epochs: 3
+  per_device_batch_size: 4
+  gradient_accumulation_steps: 4
+  learning_rate: 1.0e-4
+  lr_scheduler: "cosine"
+  warmup_ratio: 0.03
+  max_seq_length: 1024
+  logging_steps: 10
+  save_strategy: "epoch"
+  bf16: true
+output:
+  local_dir: "./output/aya-expanse-8b-recovery-lora"
+  adapter_repo: "qasimjethwa/aya-expanse-8b-recovery-lora"
+  dataset_repo: "qasimjethwa/recovery-copilot-toolcalls"

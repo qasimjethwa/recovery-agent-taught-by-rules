@@ -1,0 +1,106 @@
+{
+  "gold_file": "data/eval.jsonl",
+  "pred_file": "eval/predictions_baseline.jsonl",
+  "cases": 128,
+  "metrics": {
+    "call_exact_match_accuracy": 0.0288,
+    "argument_accuracy": 0.2523,
+    "invalid_call_rate": 0.0,
+    "task_success_rate": 0.0,
+    "task_success_rate_structural": 0.0
+  },
+  "counts": {
+    "expected_calls": 243,
+    "exact_calls": 7,
+    "expected_argument_values": 757,
+    "correct_argument_values": 191,
+    "predicted_calls": 440,
+    "invalid_calls": 0,
+    "successful_cases": 0,
+    "structural_successful_cases": 0
+  },
+  "per_reason_task_success": {
+    "bank_server_error": {
+      "cases": 17,
+      "successful": 0,
+      "rate": 0.0
+    },
+    "card_declined": {
+      "cases": 24,
+      "successful": 0,
+      "rate": 0.0
+    },
+    "daily_limit_exceeded": {
+      "cases": 14,
+      "successful": 0,
+      "rate": 0.0
+    },
+    "expired_card": {
+      "cases": 13,
+      "successful": 0,
+      "rate": 0.0
+    },
+    "insufficient_funds": {
+      "cases": 15,
+      "successful": 0,
+      "rate": 0.0
+    },
+    "network_drop": {
+      "cases": 15,
+      "successful": 0,
+      "rate": 0.0
+    },
+    "otp_timeout": {
+      "cases": 19,
+      "successful": 0,
+      "rate": 0.0
+    },
+    "wrong_cvv": {
+      "cases": 11,
+      "successful": 0,
+      "rate": 0.0
+    }
+  },
+  "per_reason_task_success_structural": {
+    "bank_server_error": {
+      "cases": 17,
+      "successful": 0,
+      "rate": 0.0
+    },
+    "card_declined": {
+      "cases": 24,
+      "successful": 0,
+      "rate": 0.0
+    },
+    "daily_limit_exceeded": {
+      "cases": 14,
+      "successful": 0,
+      "rate": 0.0
+    },
+    "expired_card": {
+      "cases": 13,
+      "successful": 0,
+      "rate": 0.0
+    },
+    "insufficient_funds": {
+      "cases": 15,
+      "successful": 0,
+      "rate": 0.0
+    },
+    "network_drop": {
+      "cases": 15,
+      "successful": 0,
+      "rate": 0.0
+    },
+    "otp_timeout": {
+      "cases": 19,
+      "successful": 0,
+      "rate": 0.0
+    },
+    "wrong_cvv": {
+      "cases": 11,
+      "successful": 0,
+      "rate": 0.0
+    }
+  }
+}

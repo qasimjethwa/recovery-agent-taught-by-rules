@@ -1,0 +1,1209 @@
+{
+  "pred_file": "eval/predictions_baseline.jsonl",
+  "cases": 128,
+  "parse_failures": 18,
+  "silent_retry_class_bank_server_error": {
+    "cases": 17,
+    "silent_ok": 0,
+    "contacted_customer": 7,
+    "wrong_other": 10
+  },
+  "invalid_call_problems": {},
+  "argument_errors_by_name": {
+    "delay_minutes": 86,
+    "message": 43,
+    "alternate_method": 5
+  },
+  "failure_examples": {
+    "bank_server_error": [
+      {
+        "id": "eval-0001",
+        "expected": [
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500405",
+              "delay_minutes": 30
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500405",
+              "delay_minutes": 5,
+              "payment_method": "Credit Card"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500405",
+              "channel": "SMS",
+              "delay_minutes": 10,
+              "message": "Dear Diya Pillai, your payment of \u20b9577 failed due to a bank server error. We're retrying the transaction. Please check your account for the updated status. If issues persist, contact our support."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500405",
+              "alternate_method": "UPI"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500405",
+              "delay_minutes": 15
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500405\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"Credit Card\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500405\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 10,\n            \"message\": \"Dear Diya Pilla"
+      },
+      {
+        "id": "eval-0004",
+        "expected": [
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500423",
+              "delay_minutes": 30
+            }
+          }
+        ],
+        "predicted": [],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500423\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"Debit Card\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500423\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 10,\n            \"message\": \"Dear Farhan Shai"
+      },
+      {
+        "id": "eval-0007",
+        "expected": [
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500441",
+              "delay_minutes": 30
+            }
+          }
+        ],
+        "predicted": [],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500441\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"Credit Card\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500441\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 10,\n            \"message\": \"Dear Diya Pilla"
+      }
+    ],
+    "wrong_cvv": [
+      {
+        "id": "eval-0002",
+        "expected": [
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500411",
+              "channel": "Email",
+              "delay_minutes": 10,
+              "message": "Karthik Reddy, your Netbanking appears to have expired or been declined for \u20b92,278. Update it here to avoid losing your order."
+            }
+          }
+        ],
+        "predicted": [],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500411\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"Netbanking\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500411\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 10,\n            \"message\": \"Dear Karthik Red"
+      },
+      {
+        "id": "eval-0025",
+        "expected": [
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500945",
+              "channel": "Email",
+              "delay_minutes": 10,
+              "message": "Rohan Kapoor, your Wallet appears to have expired or been declined for \u20b92,656. Update it here to avoid losing your order."
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500945",
+              "delay_minutes": 5,
+              "payment_method": "Wallet"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500945",
+              "channel": "SMS",
+              "delay_minutes": 10,
+              "message": "Hello Rohan Kapoor, there was an issue with your payment. Please check your CVV and retry the transaction. If the problem persists, try an alternate payment method. Thank you."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500945",
+              "alternate_method": "UPI"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500945",
+              "delay_minutes": 15
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500945\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"Wallet\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500945\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 10,\n            \"message\": \"Hello Rohan Kapoor, "
+      },
+      {
+        "id": "eval-0034",
+        "expected": [
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500978",
+              "channel": "Email",
+              "delay_minutes": 10,
+              "message": "Rohan Kapoor, your Netbanking appears to have expired or been declined for \u20b92,656. Update it here to avoid losing your order."
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500978",
+              "delay_minutes": 5,
+              "payment_method": "Netbanking"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500978",
+              "channel": "SMS",
+              "delay_minutes": 10,
+              "message": "Hello Rohan Kapoor, your payment failed due to an incorrect CVV. Please check and retry using the same payment method. Alternatively, you can use UPI, Credit Card, Debit Card, or Wallet."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500978",
+              "alternate_method": "UPI"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500978",
+              "delay_minutes": 15
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500978\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"Netbanking\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500978\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 10,\n            \"message\": \"Hello Rohan Kapo"
+      }
+    ],
+    "card_declined": [
+      {
+        "id": "eval-0003",
+        "expected": [
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500417",
+              "channel": "WhatsApp",
+              "delay_minutes": 15,
+              "message": "Your cart is still saved. Payment of \u20b92,656 didn't clear. Switch payment method and finish in seconds."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500417",
+              "alternate_method": "UPI"
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500417",
+              "delay_minutes": 5,
+              "payment_method": "Debit Card"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500417",
+              "channel": "SMS",
+              "delay_minutes": 10,
+              "message": "Your payment of \u20b92,656 was declined. We're trying again in 5 minutes. Alternatively, you can choose another payment method."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500417",
+              "alternate_method": "UPI"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500417",
+              "delay_minutes": 15
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500417\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"Debit Card\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500417\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 10,\n            \"message\": \"Your payment of "
+      },
+      {
+        "id": "eval-0009",
+        "expected": [
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500453",
+              "channel": "WhatsApp",
+              "delay_minutes": 15,
+              "message": "Your cart is still saved. Payment of \u20b91,144 didn't clear. Switch payment method and finish in seconds."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500453",
+              "alternate_method": "UPI"
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500453",
+              "delay_minutes": 5,
+              "payment_method": "Debit Card"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500453",
+              "channel": "SMS",
+              "delay_minutes": 10,
+              "message": "Your payment of \u20b91,144 was declined. We're trying again in 5 minutes. Alternatively, you can complete the payment using a different payment method."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500453",
+              "alternate_method": "UPI"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500453",
+              "delay_minutes": 15
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500453\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"Debit Card\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500453\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 10,\n            \"message\": \"Your payment of "
+      },
+      {
+        "id": "eval-0011",
+        "expected": [
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500882",
+              "channel": "WhatsApp",
+              "delay_minutes": 15,
+              "message": "Your cart is still saved. Payment of \u20b91,144 didn't clear. Switch payment method and finish in seconds."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500882",
+              "alternate_method": "Wallet"
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500882",
+              "delay_minutes": 5,
+              "payment_method": "UPI"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500882",
+              "channel": "SMS",
+              "delay_minutes": 10,
+              "message": "Your payment of \u20b91,144 was declined. We're trying again in 5 minutes. Alternatively, you can complete the payment using a different method."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500882",
+              "alternate_method": "Credit Card"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500882",
+              "delay_minutes": 15
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500882\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"UPI\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500882\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 10,\n            \"message\": \"Your payment of \u20b91,144 "
+      }
+    ],
+    "network_drop": [
+      {
+        "id": "eval-0005",
+        "expected": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500429",
+              "delay_minutes": 1,
+              "payment_method": "Netbanking"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500429",
+              "channel": "SMS",
+              "delay_minutes": 1,
+              "message": "Quick nudge \u2014 your order for \u20b91,711 is on hold. Complete payment via Netbanking to confirm it."
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500429",
+              "delay_minutes": 5,
+              "payment_method": "Netbanking"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500429",
+              "channel": "SMS",
+              "delay_minutes": 10,
+              "message": "Your payment of \u20b91,711 to Sneha Iyer failed due to a network issue. We're retrying the transaction. Please check your account for the updated status. For assistance, contact our support team."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500429",
+              "alternate_method": "UPI"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500429",
+              "delay_minutes": 15
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500429\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"Netbanking\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500429\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 10,\n            \"message\": \"Your payment of "
+      },
+      {
+        "id": "eval-0013",
+        "expected": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500894",
+              "delay_minutes": 1,
+              "payment_method": "Credit Card"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500894",
+              "channel": "SMS",
+              "delay_minutes": 1,
+              "message": "Quick nudge \u2014 your order for \u20b9199 is on hold. Complete payment via Credit Card to confirm it."
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500894",
+              "delay_minutes": 5,
+              "payment_method": "Credit Card"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500894",
+              "channel": "SMS",
+              "delay_minutes": 10,
+              "message": "Your payment of \u20b9199 failed due to a network issue. We're retrying the transaction. Please check your account for the updated status. If the problem persists, try an alternate payment method."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500894",
+              "alternate_method": "UPI"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500894",
+              "delay_minutes": 15
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500894\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"Credit Card\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500894\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 10,\n            \"message\": \"Your payment of"
+      },
+      {
+        "id": "eval-0018",
+        "expected": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500924",
+              "delay_minutes": 1,
+              "payment_method": "Wallet"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500924",
+              "channel": "SMS",
+              "delay_minutes": 1,
+              "message": "Quick nudge \u2014 your order for \u20b91,711 is on hold. Complete payment via Wallet to confirm it."
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500924",
+              "delay_minutes": 5,
+              "payment_method": "Wallet"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500924",
+              "channel": "SMS",
+              "delay_minutes": 10,
+              "message": "Your payment of \u20b91,711 to Meera Pillai failed due to a network issue. We're retrying the transaction. Please check your wallet for the updated attempt."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500924",
+              "alternate_method": "UPI"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500924",
+              "delay_minutes": 15
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500924\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"Wallet\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500924\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 10,\n            \"message\": \"Your payment of \u20b91,7"
+      }
+    ],
+    "otp_timeout": [
+      {
+        "id": "eval-0006",
+        "expected": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500435",
+              "delay_minutes": 2,
+              "payment_method": "Credit Card"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500435",
+              "channel": "SMS",
+              "delay_minutes": 2,
+              "message": "Quick nudge \u2014 your order for \u20b9388 is on hold. Complete payment via Credit Card to confirm it."
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500435",
+              "delay_minutes": 5,
+              "payment_method": "Credit Card"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500435",
+              "channel": "SMS",
+              "delay_minutes": 10,
+              "message": "Your payment of \u20b9388 to Vivaan Joshi failed due to OTP timeout. We're retrying the transaction. Please keep an eye on your phone/email for updates."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500435",
+              "alternate_method": "UPI"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500435",
+              "delay_minutes": 15
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500435\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"Credit Card\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500435\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 10,\n            \"message\": \"Your payment of"
+      },
+      {
+        "id": "eval-0010",
+        "expected": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500459",
+              "delay_minutes": 2,
+              "payment_method": "Debit Card"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500459",
+              "channel": "SMS",
+              "delay_minutes": 2,
+              "message": "Quick nudge \u2014 your order for \u20b91,522 is on hold. Complete payment via Debit Card to confirm it."
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500459",
+              "delay_minutes": 5,
+              "payment_method": "Debit Card"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500459",
+              "channel": "SMS",
+              "delay_minutes": 3,
+              "message": "Your payment of \u20b91,522 to Aarav Mehta has failed due to OTP timeout. We're retrying the transaction. Please keep an eye on your phone/email for updates."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500459",
+              "alternate_method": "UPI"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500459",
+              "delay_minutes": 10
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500459\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"Debit Card\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500459\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 3,\n            \"message\": \"Your payment of \u20b9"
+      },
+      {
+        "id": "eval-0017",
+        "expected": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500918",
+              "delay_minutes": 2,
+              "payment_method": "UPI"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500918",
+              "channel": "SMS",
+              "delay_minutes": 2,
+              "message": "Quick nudge \u2014 your order for \u20b93,034 is on hold. Complete payment via UPI to confirm it."
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500918",
+              "delay_minutes": 5,
+              "payment_method": "UPI"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500918",
+              "channel": "SMS",
+              "delay_minutes": 10,
+              "message": "Your payment of \u20b93,034 failed due to OTP timeout. We're retrying the transaction. Please keep an eye on your UPI for the upcoming attempt."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500918",
+              "alternate_method": "Credit Card"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500918",
+              "delay_minutes": 15
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500918\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"UPI\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500918\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 10,\n            \"message\": \"Your payment of \u20b93,034 "
+      }
+    ],
+    "insufficient_funds": [
+      {
+        "id": "eval-0008",
+        "expected": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500447",
+              "delay_minutes": 180,
+              "payment_method": "Credit Card"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500447",
+              "channel": "SMS",
+              "delay_minutes": 180,
+              "message": "Quick nudge \u2014 your order for \u20b92,467 is on hold. Complete payment via Credit Card to confirm it."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500447",
+              "alternate_method": "UPI"
+            }
+          }
+        ],
+        "predicted": [],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500447\",\n            \"delay_minutes\": 24,\n            \"payment_method\": \"Credit Card\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500447\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 12,\n            \"message\": \"Dear Naina Cha"
+      },
+      {
+        "id": "eval-0015",
+        "expected": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500906",
+              "delay_minutes": 180,
+              "payment_method": "Debit Card"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500906",
+              "channel": "SMS",
+              "delay_minutes": 180,
+              "message": "Quick nudge \u2014 your order for \u20b9955 is on hold. Complete payment via Debit Card to confirm it."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500906",
+              "alternate_method": "UPI"
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500906",
+              "delay_minutes": 5,
+              "payment_method": "Debit Card"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500906",
+              "channel": "SMS",
+              "delay_minutes": 10,
+              "message": "Your payment of \u20b9955 was not successful due to insufficient funds. Please check your balance and retry the transaction. Alternatively, you can choose another payment method."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500906",
+              "alternate_method": "UPI"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500906",
+              "delay_minutes": 15
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500906\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"Debit Card\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500906\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 10,\n            \"message\": \"Your payment of "
+      },
+      {
+        "id": "eval-0024",
+        "expected": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500939",
+              "delay_minutes": 180,
+              "payment_method": "UPI"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500939",
+              "channel": "SMS",
+              "delay_minutes": 180,
+              "message": "Quick nudge \u2014 your order for \u20b9955 is on hold. Complete payment via UPI to confirm it."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500939",
+              "alternate_method": "Wallet"
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500939",
+              "delay_minutes": 5,
+              "payment_method": "UPI"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500939",
+              "channel": "SMS",
+              "delay_minutes": 10,
+              "message": "Your payment of \u20b9955 failed due to insufficient funds. Please check your balance and retry the transaction. Alternatively, you can choose another payment method."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500939",
+              "alternate_method": "Credit Card"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500939",
+              "delay_minutes": 15
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500939\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"UPI\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500939\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 10,\n            \"message\": \"Your payment of \u20b9955 fa"
+      }
+    ],
+    "daily_limit_exceeded": [
+      {
+        "id": "eval-0012",
+        "expected": [
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500888",
+              "channel": "WhatsApp",
+              "delay_minutes": 240,
+              "message": "Your cart is still saved. Payment of \u20b91,522 didn't clear. Switch payment method and finish in seconds."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500888",
+              "alternate_method": "UPI"
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500888",
+              "delay_minutes": 24,
+              "payment_method": "Credit Card"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500888",
+              "channel": "SMS",
+              "delay_minutes": 1,
+              "message": "Your payment of \u20b91,522 was declined due to exceeding your daily limit. We're rescheduling the payment for 24 hours. Please check your card limit and try again."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500888",
+              "alternate_method": "UPI"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500888",
+              "delay_minutes": 12
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500888\",\n            \"delay_minutes\": 24,\n            \"payment_method\": \"Credit Card\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500888\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 1,\n            \"message\": \"Your payment of"
+      },
+      {
+        "id": "eval-0028",
+        "expected": [
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500963",
+              "channel": "WhatsApp",
+              "delay_minutes": 240,
+              "message": "Your cart is still saved. Payment of \u20b9388 didn't clear. Switch payment method and finish in seconds."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500963",
+              "alternate_method": "UPI"
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500963",
+              "delay_minutes": 5,
+              "payment_method": "Wallet"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500963",
+              "channel": "SMS",
+              "delay_minutes": 10,
+              "message": "Your payment of \u20b9388 was declined due to exceeding daily limit. We're retrying the transaction in 5 minutes. Alternatively, you can choose another payment method."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500963",
+              "alternate_method": "UPI"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500963",
+              "delay_minutes": 15
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500963\",\n            \"delay_minutes\": 5,\n            \"payment_method\": \"Wallet\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500963\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 10,\n            \"message\": \"Your payment of \u20b9388"
+      },
+      {
+        "id": "eval-0036",
+        "expected": [
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500990",
+              "channel": "WhatsApp",
+              "delay_minutes": 240,
+              "message": "Your cart is still saved. Payment of \u20b93,034 didn't clear. Switch payment method and finish in seconds."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500990",
+              "alternate_method": "Wallet"
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500990",
+              "delay_minutes": 15,
+              "payment_method": "UPI"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500990",
+              "channel": "SMS",
+              "delay_minutes": 5,
+              "message": "Your payment of \u20b93,034 was declined due to reaching your daily limit. We're rescheduling the payment in 15 minutes. Please check your UPI limit and try again."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500990",
+              "alternate_method": "Credit Card"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500990",
+              "delay_minutes": 30
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500990\",\n            \"delay_minutes\": 15,\n            \"payment_method\": \"UPI\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500990\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 5,\n            \"message\": \"Your payment of \u20b93,034 "
+      }
+    ],
+    "expired_card": [
+      {
+        "id": "eval-0032",
+        "expected": [
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500966",
+              "channel": "Email",
+              "delay_minutes": 20,
+              "message": "Riya Sharma, your Wallet appears to have expired or been declined for \u20b9577. Update it here to avoid losing your order."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500966",
+              "alternate_method": "UPI"
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500966",
+              "delay_minutes": 24,
+              "payment_method": "Wallet"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500966",
+              "channel": "SMS",
+              "delay_minutes": 1,
+              "message": "Your payment method has expired. Please update your card details to complete the transaction. Alternatively, you can choose another payment method."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500966",
+              "alternate_method": "UPI"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500966",
+              "delay_minutes": 60
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500966\",\n            \"delay_minutes\": 24,\n            \"payment_method\": \"Wallet\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500966\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 1,\n            \"message\": \"Your payment method "
+      },
+      {
+        "id": "eval-0035",
+        "expected": [
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500984",
+              "channel": "Email",
+              "delay_minutes": 20,
+              "message": "Ananya Rao, your Wallet appears to have expired or been declined for \u20b91,333. Update it here to avoid losing your order."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500984",
+              "alternate_method": "UPI"
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500984",
+              "delay_minutes": 24,
+              "payment_method": "Wallet"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500984",
+              "channel": "SMS",
+              "delay_minutes": 1,
+              "message": "Your card has expired. Please update your payment details to complete the transaction. Alternatively, you can use another payment method."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500984",
+              "alternate_method": "UPI"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500984",
+              "delay_minutes": 60
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500984\",\n            \"delay_minutes\": 24,\n            \"payment_method\": \"Wallet\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500984\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 1,\n            \"message\": \"Your card has expire"
+      },
+      {
+        "id": "eval-0041",
+        "expected": [
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500999",
+              "channel": "Email",
+              "delay_minutes": 20,
+              "message": "Riya Sharma, your Netbanking appears to have expired or been declined for \u20b9577. Update it here to avoid losing your order."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500999",
+              "alternate_method": "UPI"
+            }
+          }
+        ],
+        "predicted": [
+          {
+            "tool": "schedule_retry",
+            "arguments": {
+              "txn_id": "TXN500999",
+              "delay_minutes": 24,
+              "payment_method": "Netbanking"
+            }
+          },
+          {
+            "tool": "send_customer_message",
+            "arguments": {
+              "txn_id": "TXN500999",
+              "channel": "SMS",
+              "delay_minutes": 1,
+              "message": "Your card has expired. Please update your payment details to complete the transaction. Alternatively, you can use another payment method."
+            }
+          },
+          {
+            "tool": "offer_alternate_method",
+            "arguments": {
+              "txn_id": "TXN500999",
+              "alternate_method": "UPI"
+            }
+          },
+          {
+            "tool": "silent_retry",
+            "arguments": {
+              "txn_id": "TXN500999",
+              "delay_minutes": 60
+            }
+          }
+        ],
+        "raw_output": "[\n    {\n        \"tool\": \"schedule_retry\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500999\",\n            \"delay_minutes\": 24,\n            \"payment_method\": \"Netbanking\"\n        }\n    },\n    {\n        \"tool\": \"send_customer_message\",\n        \"arguments\": {\n            \"txn_id\": \"TXN500999\",\n            \"channel\": \"SMS\",\n            \"delay_minutes\": 1,\n            \"message\": \"Your card has ex"
+      }
+    ]
+  }
+}
