@@ -97,4 +97,4 @@ Full results: `eval/results_baseline.json`, `eval/results_tuned.json`
 - Demo: https://huggingface.co/spaces/qasimjethwa/recovery-agent-taught-by-rules
 - Model collection: https://huggingface.co/collections/qasimjethwa/recovery-agent-taught-by-rules-models-6af684adaa2770453b61d2aa
 - Dataset collection: https://huggingface.co/collections/qasimjethwa/recovery-agent-taught-by-rules-datasets-6af68542bda0286407d4e91b
-- Write-up: `article.md` (Hugging Face Article publication in progress)
+- Write-up: this README + `article.md` (the full article text; HF Article publishing is not available on this account — it requires a Pro subscription — and the hackathon rules accept a GitHub repo README as the write-up)
